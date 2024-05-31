@@ -34,7 +34,7 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
             entity.Activo = customer.Activo;
 
             _context.Update(entity);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return await Task.FromResult(true);
         }

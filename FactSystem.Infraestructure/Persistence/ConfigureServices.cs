@@ -34,6 +34,8 @@ namespace FactSystem.Infraestructure.Persistence
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IProductoService, ProductoService>();
+            services.AddScoped<IProductoRepository, ProductoRepository>();
 
             return services;
         }
