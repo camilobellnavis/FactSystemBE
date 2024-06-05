@@ -14,5 +14,6 @@ namespace FactSystem.Application.Repositories
         Task<DetFactura> GetById(int detailId);
         Task<List<DetFactura>> GetAll();
         Task<bool> Delete(int detailId);
+        Task<int> GetLastId();
     }
 }

@@ -15,5 +15,6 @@ namespace FactSystem.Application.Interfaces
         Task<Response<DetFactura>> GetById(int detailId);
         Task<Response<List<DetFactura>>> GetAll();
         Task<Response<bool>> Delete(int detailId);
+        Task<Response<int>> GetLastId();
     }
 }

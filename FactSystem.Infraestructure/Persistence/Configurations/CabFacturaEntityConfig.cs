@@ -14,7 +14,8 @@ namespace FactSystem.Infraestructure.Persistence.Configurations
                .HasColumnName("id_factura");
 
             entity.Property(t => t.NumFactura)
-               .HasColumnName("num_factura");
+               .HasColumnName("num_factura")
+               .HasAnnotation("SqlServer:Identity", "10001, 1");
 
             entity.Property(t => t.DniCliente)
                .HasColumnName("dni_cliente")

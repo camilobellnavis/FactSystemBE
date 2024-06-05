@@ -113,6 +113,24 @@ namespace FactSystem.Application.UsesCases
             }
             return response;
         }
+        public async Task<Response<int>> GetLastId()
+        {
+            var response = new Response<int>();
+            try
+            {
+                response.Data = await _detFacturaRepository.GetLastId();
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Consulta con éxito";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
 
 
 

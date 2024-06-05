@@ -14,5 +14,7 @@ namespace FactSystem.Application.Repositories
         Task<CabFactura> GetById(int invoiceId);
         Task<List<CabFactura>> GetAll();
         Task<bool> Delete(int invoiceId);
+        Task<int> GetLastId();
+        Task<int> GetLastIdF();
     }
 }

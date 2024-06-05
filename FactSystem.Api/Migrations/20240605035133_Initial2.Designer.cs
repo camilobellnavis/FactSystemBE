@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FactSystem.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240526044129_AddInitial")]
-    partial class AddInitial
+    [Migration("20240605035133_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,8 @@ namespace FactSystem.Api.Migrations
 
                     b.Property<int>("NumFactura")
                         .HasColumnType("int")
-                        .HasColumnName("num_factura");
+                        .HasColumnName("num_factura")
+                        .HasAnnotation("SqlServer:Identity", "10001, 1");
 
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("decimal(10,2)")

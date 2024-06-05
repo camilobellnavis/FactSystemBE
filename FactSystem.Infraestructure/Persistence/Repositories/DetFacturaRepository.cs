@@ -51,7 +51,6 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
         {
             return await _context.DetFacturas.ToListAsync();
         }
-
         public async Task<bool> Delete(int detailId)
         {
             var entity = await _context.DetFacturas.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(detailId));
@@ -64,6 +63,10 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
             _context.Remove(entity);
             _context.SaveChangesAsync();
             return await Task.FromResult(true);
+        }
+        public async Task<int> GetLastId()
+        {
+            return _context.DetFacturas.OrderByDescending(x => x.Id).FirstOrDefaultAsync().Result.Id;
         }
 
 

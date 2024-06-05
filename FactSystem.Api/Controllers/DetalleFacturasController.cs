@@ -1,4 +1,5 @@
 ﻿using FactSystem.Application.Interfaces;
+using FactSystem.Application.UsesCases;
 using FactSystem.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +75,17 @@ namespace FactSystem.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _detFacturaService.Delete(id);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+
+        // GET: api/<ClientesController>
+        [HttpGet("GetLastId")]
+        public async Task<IActionResult> GetLastId()
+        {
+            var response = await _detFacturaService.GetLastId();
             if (response.IsSuccess)
                 return Ok(response);
 

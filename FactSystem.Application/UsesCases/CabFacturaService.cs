@@ -13,16 +13,29 @@ namespace FactSystem.Application.UsesCases
     public class CabFacturaService : ICabFacturaService
     {
         private readonly ICabFacturaRepository _cabFacturaRepository;
+        private readonly IDetFacturaRepository _detFacturaRepository;
 
-        public CabFacturaService(ICabFacturaRepository cabFacturaRepository)
+        public CabFacturaService(ICabFacturaRepository cabFacturaRepository, IDetFacturaRepository detFacturaRepository)
         {
             _cabFacturaRepository = cabFacturaRepository;
+            _detFacturaRepository = detFacturaRepository;
         }
         public async Task<Response<bool>> Create(CabFactura invoice)
         {
             var response = new Response<bool>();
             try
             {
+                invoice.NumFactura = await _cabFacturaRepository.GetLastId() + 1;
+                //invoice.IdFactura = await _cabFacturaRepository.GetLastIdF() + 1;
+
+                if (invoice.DetFacturas != null && invoice.DetFacturas.Any())
+                {
+                    foreach (var detFactura in invoice.DetFacturas)
+                    {
+                        detFactura.CabFacturaNavigation = invoice;
+
+                    }
+                }
                 response.Data = await _cabFacturaRepository.Create(invoice);
                 if (response.Data)
                 {
@@ -105,6 +118,44 @@ namespace FactSystem.Application.UsesCases
                 {
                     response.IsSuccess = true;
                     response.Message = "Eliminación Exitosa!!!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<Response<int>> GetLastId()
+        {
+            var response = new Response<int>();
+            try
+            {
+                response.Data = await _cabFacturaRepository.GetLastId();
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Consulta con éxito";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<Response<int>> GetLastIdF()
+        {
+            var response = new Response<int>();
+            try
+            {
+                response.Data = await _cabFacturaRepository.GetLastIdF();
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Consulta con éxito";
                 }
             }
             catch (Exception e)

@@ -66,5 +66,15 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
             _context.SaveChangesAsync();
             return await Task.FromResult(true);
         }
+
+        public async Task<int> GetLastId()
+        {
+            return  _context.CabFacturas.OrderByDescending(x => x.NumFactura).FirstOrDefaultAsync().Result.NumFactura;
+        }
+
+        public async Task<int> GetLastIdF()
+        {
+            return _context.CabFacturas.OrderByDescending(x => x.IdFactura).FirstOrDefaultAsync().Result.IdFactura;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace FactSystem.Infraestructure.Persistence
         {
             SqlConnectionStringBuilder connectionStringBuilder = new();
             connectionStringBuilder.DataSource = "(localdb)\\Servidor";
-            connectionStringBuilder.InitialCatalog = "FacturacionDB";
+            connectionStringBuilder.InitialCatalog = "SystemFactDB";
             connectionStringBuilder.IntegratedSecurity = true;
             var cs = connectionStringBuilder.ConnectionString;
 

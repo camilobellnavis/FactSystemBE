@@ -9,6 +9,6 @@ namespace FactSystem.Domain.Entities
         public int Cantidad { get; set; }
         public int CodigoProducto { get; set; }
         public int CabFactura { get; set; }
-        public virtual CabFactura CabFacturaNavigation { get; set; }
+        public virtual CabFactura? CabFacturaNavigation { get; set; }
     }
 }

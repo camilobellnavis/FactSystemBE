@@ -79,5 +79,26 @@ namespace FactSystem.Api.Controllers
 
             return BadRequest(response);
         }
+
+        // GET: api/<ClientesController>
+        [HttpGet("GetLastId")]
+        public async Task<IActionResult> GetLastId()
+        {
+            var response = await _cabFacturaService.GetLastId();
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+
+        [HttpGet("GetLastIdF")]
+        public async Task<IActionResult> GetLastIdF()
+        {
+            var response = await _cabFacturaService.GetLastIdF();
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
     }
 }
