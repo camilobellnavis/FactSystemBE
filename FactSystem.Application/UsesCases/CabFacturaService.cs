@@ -25,7 +25,7 @@ namespace FactSystem.Application.UsesCases
             var response = new Response<bool>();
             try
             {
-                invoice.NumFactura = await _cabFacturaRepository.GetLastId() + 1;
+                //invoice.NumFactura = await _cabFacturaRepository.GetLastId() + 1;
                 //invoice.IdFactura = await _cabFacturaRepository.GetLastIdF() + 1;
 
                 if (invoice.DetFacturas != null && invoice.DetFacturas.Any())
