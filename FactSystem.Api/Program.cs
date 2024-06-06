@@ -1,4 +1,6 @@
+using FactSystem.Api.Helpers;
 using FactSystem.Infraestructure.Persistence;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
+
+var appSettingsSection = builder.Configuration.GetSection("Jwt");
+
+builder.Services.Configure<AppSettings>(appSettingsSection);
 
 var app = builder.Build();
 
@@ -27,7 +33,7 @@ app.UseCors(options =>
 });
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

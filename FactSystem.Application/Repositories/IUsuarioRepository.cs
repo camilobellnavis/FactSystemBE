@@ -6,5 +6,6 @@ namespace FactSystem.Application.Repositories
     {
         List<Usuario> GetAll();
         Usuario Create(Usuario usuario);
+        Task<Usuario> Authenticate(string userName, string password);
     }
 }

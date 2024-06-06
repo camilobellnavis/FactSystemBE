@@ -56,7 +56,7 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
             }
 
             _context.Remove(entity);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return await Task.FromResult(true);
         }
 

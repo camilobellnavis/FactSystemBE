@@ -1,4 +1,5 @@
-﻿using FactSystem.Application.Interfaces;
+﻿using FactSystem.Application.Commons;
+using FactSystem.Application.Interfaces;
 using FactSystem.Application.Repositories;
 using FactSystem.Domain.Entities;
 using System;
@@ -16,6 +17,33 @@ namespace FactSystem.Application.UsesCases
         public UsuarioService(IUsuarioRepository usuarioRepository)
         {
             _usuarioRepository = usuarioRepository;
+        }
+
+        public async Task<Response<Usuario>> Authenticate(string userName,string password)
+        {
+            var response = new Response<Usuario>();
+            try
+            {
+                var user = await _usuarioRepository.Authenticate(userName,password);
+                if (user is null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "User no existe...";
+                    return response;
+                }
+                else
+                {
+                    response.Data = user;
+                    response.IsSuccess = true;
+                    response.Message = "Consulta Exitosa!!!";
+
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
         }
 
         public Usuario Create(Usuario usuario)

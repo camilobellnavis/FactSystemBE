@@ -17,6 +17,11 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
             new Usuario { NombreUsuario = "morales",Bloqueado = 0, Contraseña="camilo123",IntentosFallidos=0 }
         };
 
+        public async Task<Usuario> Authenticate(string userName, string  password)
+        {
+            return  usuarios.Where(x => x.NombreUsuario == userName && x.Contraseña == password).FirstOrDefault();
+        }
+
         public Usuario Create(Usuario usuario)
         {
             throw new NotImplementedException();

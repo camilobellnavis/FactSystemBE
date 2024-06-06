@@ -24,12 +24,8 @@ namespace FactSystem.Infraestructure.Persistence
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(cs,
                     builder => builder.MigrationsAssembly("FactSystem.Api")));
-            //services.AddScoped<ICustomersRepository, CustomersRepository>();
-            //services.AddScoped<IUsersRepository, UsersRepository>();
-            //services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-            //services.AddScoped<IDiscountRepository, DiscountRepository>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IClienteService, ClienteService>();
@@ -40,6 +36,8 @@ namespace FactSystem.Infraestructure.Persistence
             services.AddScoped<IDetFacturaService, DetFacturaService>();
             services.AddScoped<ICabFacturaService, CabFacturaService>();
             services.AddScoped<ICabFacturaRepository, CabFacturaRepository>();
+            services.AddSingleton<IConfiguration>(configuration);
+            
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using FactSystem.Application.DTOs;
+﻿using FactSystem.Application.Commons;
+using FactSystem.Application.DTOs;
 using FactSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace FactSystem.Application.Interfaces
         List<Usuario> GetAll();
 
         Usuario Create(Usuario usuario);
+
+        Task<Response<Usuario>> Authenticate(string userName,string password);
     }
 }
