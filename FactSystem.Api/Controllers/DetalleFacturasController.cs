@@ -1,12 +1,14 @@
 ﻿using FactSystem.Application.Interfaces;
 using FactSystem.Application.UsesCases;
 using FactSystem.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FactSystem.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DetalleFacturasController : ControllerBase

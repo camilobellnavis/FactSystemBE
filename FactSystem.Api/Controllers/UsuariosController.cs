@@ -1,5 +1,6 @@
 ﻿using FactSystem.Api.Helpers;
 using FactSystem.Application.Interfaces;
+using FactSystem.Application.UsesCases;
 using FactSystem.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,19 @@ namespace FactSystem.Api.Controllers
             _service = service;
             _appSettings = appSettings.Value;
         }
+        // POST api/<UsuariosController>
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromBody] Usuario user)
+        {
+            if (user == null)
+                return BadRequest();
+            var response = await _service.Create(user);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+
         // GET: api/<UsuariosController>
         [HttpGet]
         public ActionResult<List<Usuario>> Get()
@@ -52,6 +66,33 @@ namespace FactSystem.Api.Controllers
 
             return BadRequest(userAuth.Message);
         }
+        
+        [HttpPut("IncreaseAttempts/{id}")]
+        public async Task<IActionResult> IncreaseAttempts(string id, [FromBody] Usuario user)
+        {
+            var userExists = await _service.GetById(id);
+            if (userExists.Data == null)
+                return NotFound(userExists);
+
+            if (user == null)
+                return BadRequest();
+            var response = await _service.IncreaseAttempts(userExists.Data);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+        
+        // GET: api/<ClientesController>
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var response = await _service.GetAll();
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
 
         private string BuildToken(Usuario user)
         {
@@ -63,7 +104,7 @@ namespace FactSystem.Api.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.NombreUsuario)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _appSettings.Issuer,
                 Audience = _appSettings.Audience

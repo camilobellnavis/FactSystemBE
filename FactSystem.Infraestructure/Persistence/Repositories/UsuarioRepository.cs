@@ -1,15 +1,20 @@
 ﻿using FactSystem.Application.Repositories;
 using FactSystem.Domain.Entities;
+using FactSystem.Infraestructure.Persistence.Contexts;
+using FactSystem.Infraestructure.Persistence.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FactSystem.Infraestructure.Persistence.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public UsuarioRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public static List<Usuario> usuarios = new List<Usuario>()
         {
             new Usuario { NombreUsuario = "bellnavis",Bloqueado = 0, Contraseña="camilo123",IntentosFallidos=0 },
@@ -19,17 +24,59 @@ namespace FactSystem.Infraestructure.Persistence.Repositories
 
         public async Task<Usuario> Authenticate(string userName, string  password)
         {
-            return  usuarios.Where(x => x.NombreUsuario == userName && x.Contraseña == password).FirstOrDefault();
+            return  _context.Usuarios.Where(x => x.NombreUsuario == userName && x.Contraseña == password).FirstOrDefault();
         }
 
-        public Usuario Create(Usuario usuario)
+        public async Task<bool> Create(Usuario user)
+        {
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> IncreaseAttempts(Usuario user)
+        {
+            var entity = await _context.Usuarios.AsNoTracking().SingleOrDefaultAsync(x => x.NombreUsuario.Equals(user.NombreUsuario));
+            if (entity == null)
+            {
+                return await Task.FromResult(false);
+            }
+            entity.IntentosFallidos = user.IntentosFallidos;
+
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> LockUser(Usuario user)
+        {
+            var entity = await _context.Usuarios.AsNoTracking().SingleOrDefaultAsync(x => x.NombreUsuario.Equals(user.NombreUsuario));
+            if (entity == null)
+            {
+                return await Task.FromResult(false);
+            }
+            entity.Bloqueado = user.Bloqueado;
+
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<List<Usuario>> GetAll()
+        {
+            return await _context.Usuarios.ToListAsync();
+        }
+
+        public Task<bool> Delete(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Usuario> GetAll()
+        public async Task<Usuario> GetById(string userId)
         {
-            return usuarios;
+            return await _context.Usuarios.AsNoTracking().SingleOrDefaultAsync(x => x.NombreUsuario.Equals(userId));
         }
     }
 }

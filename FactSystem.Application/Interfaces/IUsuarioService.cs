@@ -11,9 +11,11 @@ namespace FactSystem.Application.Interfaces
 {
     public interface IUsuarioService
     {
-        List<Usuario> GetAll();
-
-        Usuario Create(Usuario usuario);
+        Task<Response<List<Usuario>>> GetAll();
+        Task<Response<bool>> IncreaseAttempts(Usuario user);
+        Task<Response<bool>> LockUser(Usuario user);
+        Task<Response<Usuario>> GetById(string userId);
+        Task<Response<bool>> Create(Usuario user);
 
         Task<Response<Usuario>> Authenticate(string userName,string password);
     }
