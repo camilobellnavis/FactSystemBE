@@ -32,7 +32,7 @@ namespace FactSystem.Application.UsesCases
                 if (userIdExist is null)
                 {
                     response.IsSuccess = true;
-                    response.Message = "User no existe...";
+                    response.Message = "Ususario no existe...";
                     return response;
                 }
                 else

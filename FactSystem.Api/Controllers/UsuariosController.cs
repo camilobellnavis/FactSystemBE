@@ -18,12 +18,12 @@ namespace FactSystem.Api.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuarioService _service;
+        private readonly IUsuarioService _usuarioService;
         private readonly AppSettings _appSettings;
 
-        public UsuariosController(IUsuarioService service, IOptions<AppSettings> appSettings)
+        public UsuariosController(IUsuarioService usuarioService, IOptions<AppSettings> appSettings)
         {
-            _service = service;
+            _usuarioService = usuarioService;
             _appSettings = appSettings.Value;
         }
         // POST api/<UsuariosController>
@@ -32,20 +32,11 @@ namespace FactSystem.Api.Controllers
         {
             if (user == null)
                 return BadRequest();
-            var response = await _service.Create(user);
+            var response = await _usuarioService.Create(user);
             if (response.IsSuccess)
                 return Ok(response);
 
             return BadRequest(response);
-        }
-
-        // GET: api/<UsuariosController>
-        [HttpGet]
-        public ActionResult<List<Usuario>> Get()
-        {
-            var usuarios = _service.GetAll();
-
-            return Ok(usuarios);
         }
 
         [AllowAnonymous]
@@ -53,7 +44,7 @@ namespace FactSystem.Api.Controllers
         [HttpPost("Authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] Usuario user)
         {
-            var userAuth = await _service.Authenticate(user.NombreUsuario,user.Contraseña);
+            var userAuth = await _usuarioService.Authenticate(user.NombreUsuario,user.Contraseña);
             if (userAuth.IsSuccess)
             {
                 if(userAuth.Data != null)
@@ -61,33 +52,17 @@ namespace FactSystem.Api.Controllers
                     userAuth.Token = BuildToken(userAuth.Data);
                     return Ok(userAuth);
                 }
-                return NotFound(userAuth.Message);
+                return Ok(userAuth);
             }
 
             return BadRequest(userAuth.Message);
         }
         
-        [HttpPut("IncreaseAttempts/{id}")]
-        public async Task<IActionResult> IncreaseAttempts(string id, [FromBody] Usuario user)
-        {
-            var userExists = await _service.GetById(id);
-            if (userExists.Data == null)
-                return NotFound(userExists);
-
-            if (user == null)
-                return BadRequest();
-            var response = await _service.IncreaseAttempts(userExists.Data);
-            if (response.IsSuccess)
-                return Ok(response);
-
-            return BadRequest(response);
-        }
-        
-        // GET: api/<ClientesController>
+        // GET: api/<UsuariosController>
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var response = await _service.GetAll();
+            var response = await _usuarioService.GetAll();
             if (response.IsSuccess)
                 return Ok(response);
 
