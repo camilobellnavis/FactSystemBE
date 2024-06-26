@@ -76,8 +76,8 @@ builder.Services.AddAuthentication(x =>
             TermsOfService = new Uri("https://localhost:44306/terms"),
             Contact = new OpenApiContact
             {
-                Name = "Alex Espejo",
-                Email = "alex.espejo.c@gmail.com",
+                Name = "Marly Muñoz",
+                Email = "Marly.muñoz.c@gmail.com",
                 Url = new Uri("https://localhost:44306/contact")
             },
             License = new OpenApiLicense
